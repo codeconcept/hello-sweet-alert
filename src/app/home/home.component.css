@@ -1,0 +1,14 @@
+.results {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.movie {
+    padding: 10px;
+}
+
+.movie img {
+    width: 100px;
+}
