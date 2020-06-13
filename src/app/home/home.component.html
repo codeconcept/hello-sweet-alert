@@ -1,3 +1,11 @@
 <h3>How Sweet :)</h3>
 
 <button [swal]="['Niveau 1', 'Vous avez atteint le niveau 1 de Sweet Alert :)', 'success']">clic me</button>
+<br><br>
+<button
+    [swal]="{title: 'Quel est votre série préférée ?', input: 'text' }"
+    (confirm)="saveTVshow($event)"
+    (cancel)="cancelTVshowAlert($event)"    
+>Série préférée</button> {{message}}
+<br>
+<b>{{ favoriteTVshow }}</b>
