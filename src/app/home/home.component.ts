@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { keys } from 'my-keys';
 import { HttpClient } from '@angular/common/http';
 import { Movie } from '../models/movie';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -16,19 +17,20 @@ export class HomeComponent implements OnInit {
   imgSrc;
   results;
 
+  @ViewChild('movieSwal') private movieSwal: SwalComponent;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
   }
 
-  saveTVshow(tvShow) {
+  retrieveTitle(tvShow) {
     console.log(tvShow);
     this.favoriteTVshow = tvShow;
-    console.log( keys );
     this.getMovie(this.favoriteTVshow);
   }
 
-  cancelTVshowAlert(e) {
+  cancelRetrieveTitle(e) {
     console.log(e); 
     switch (e) {
       case 'esc':
@@ -54,7 +56,7 @@ export class HomeComponent implements OnInit {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${keys.theMovieDB}`
     };
-    this.http.get<Movie>(`${this.URL}${keys.theMovieDB}&query=${movieName}`, { headers})
+    this.http.get<Movie>(`${this.URL}${keys.theMovieDB}&query=${movieName}&language=fr`, { headers})
       .subscribe(data => {
         console.log(data);
         if (data.results.length > 0) {
@@ -66,6 +68,25 @@ export class HomeComponent implements OnInit {
         console.error(err);
         
       })
+  }
+
+  showOverview(movie:Movie) {
+    this.movieSwal.update({
+      icon: 'success',
+      title: `${movie.title}`,      
+      imageUrl: `${this.imgURL}${movie.poster_path}`,
+      text: `${this.getReleaseDate(movie.release_date)} ${movie.overview}`
+    });
+    this.movieSwal.fire();
+  }
+
+  getReleaseDate(yearString) {
+    const dateParts = yearString.split('-');
+    if (dateParts.length > 0) {
+      return `Année de parution ${dateParts[0]} - `
+    } else {
+      return '';
+    }
   }
 
 }
