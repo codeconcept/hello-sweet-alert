@@ -12,7 +12,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 export class HomeComponent implements OnInit {
   message;
   favoriteTVshow = '';
-  URL=`https://api.themoviedb.org/3/search/movie?api_key=`;
+  URL=`https://api.themoviedb.org/3/search/movie?`;
   imgURL = 'https://image.tmdb.org/t/p/w500';
   imgSrc;
   results;
@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${keys.theMovieDB}`
     };
-    this.http.get<Movie>(`${this.URL}${keys.theMovieDB}&query=${movieName}&language=fr`, { headers})
+    this.http.get<Movie>(`${this.URL}query=${movieName}&language=fr`, {headers})
       .subscribe(data => {
         console.log(data);
         if (data.results.length > 0) {
